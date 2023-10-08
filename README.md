@@ -3,7 +3,7 @@ This Bot Will Help You To Restrict all The members of the group
 
 <h3 align="center"><strong><code>Banall Bot 😈</code></strong></h3>
 <blockquote>
-<strong><i>❍&nbsp;Telegram banall bot! Use it on your own risk, [Owner](https://telegram.me/NoobZen) or [Zen BotX](https://telegram.me/ZenBotX) is not responsible for Any Kind Of harm From This repo 💕!</i></strong><br><br>
+<strong><i>❍&nbsp;Telegram banall bot! Use it on your own risk, We are not responsible for Any Kind Of harm From This repository 💕!</i></strong><br><br>
 </blockquote>
 <summary><h4><strong><i>Commands⚙️🛠️</i></strong></h4></summary>
 &nbsp;◍&nbsp;<code>/ping</code>&nbsp;:&nbsp;<strong>To Check Bot Ping Status.</strong><br>
