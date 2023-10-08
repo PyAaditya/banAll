@@ -1,0 +1,42 @@
+{
+  "name": "Telegram Banall Bot",
+  "description": "Telegram's bilek mejik.",
+  "keywords": ["python", "telegram", "ZenBotX","Zen"],
+  "logo": "https://te.legra.ph/file/3f0dba1e4f1b2dbb053e5.jpg",
+  "repository": "https://github.com/PyAaditya/Banall",
+  "stack": "container",
+  "addons": [
+      {
+         "options": {
+            "version": "12"
+         },
+         "plan": "heroku-postgresql"
+      }
+   ],
+   "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-python"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    }
+  ],
+  "env": {
+        "BOT_TOKEN": {
+            "description": "A bot token from @BotFather",
+            "required": true
+        },
+        "API_ID": {
+            "description": "App ID from my.telegram.org/apps",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "App Hash from my.telegram.org/apps",
+            "required": true
+        },
+        "OWNER_ID": {
+            "description": "Owner's numeric ID",
+            "required": true
+        }
+    }
+}
