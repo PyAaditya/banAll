@@ -21,8 +21,8 @@ This Bot Will Help You To Restrict all The members of the group
 <details>
 <summary><h3><strong>Credits💕</strong></h3></summary>
 <strong>All credit Goes To</strong>&nbsp;<code>:-</code><br>
-<code>Telegram:- <a href="https://t.me/NoobZen">@NoobZen</a></code><br>
-<code>Github:- <a href="https://github.com/PyAaditya">PyAaditya</a></code><br>
+<code>Telegram:- <a href="https://t.me/NoobZen">Zᴇɴ </a></code><br>
+<code>Github:- <a href="https://github.com/PyAaditya">PʏAᴀᴅɪᴛʏᴀ</a></code><br>
 </details>
 </p>
 
