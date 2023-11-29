@@ -98,31 +98,51 @@ async def ping(event):
 
 @main.on(events.NewMessage(pattern="^/banall"))
 async def bun(event):
-  if event.sender.id in SEXY:
-   if not event.is_group:
-        Rep = f"ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪɴ ᴀɴy ɢʀᴏᴜᴩ!!"
-        await event.reply(Rep)
-   else:
-       await event.delete()
-       cht = await event.get_chat()
-       boss = await event.client.get_me()
-       admin = cht.admin_rights
-       creator = cht.creator
-       if not admin and not creator:
-           await event.reply("__ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ʀɪɢʜᴛꜱ ᴛᴏ ᴅᴏ ᴛʜɪꜱ.__")
-           return
-       hmm =  await event.reply("__ ꜱᴛᴀʀᴛᴇᴅ ꜰᴜᴄᴋɪɴɢ...__")
-       await sleep(18)
-       await hmm.delete()
-       everyone = await event.client.get_participants(event.chat_id)
-       for user in everyone:
-           if user.id == boss.id:
-               pass
-           try:
-               await event.client(EditBannedRequest(event.chat_id, int(user.id), ChatBannedRights(until_date=None,view_messages=True)))
-           except Exception as e:
-               await event.edit(str(e))
-           await sleep(0.3)
+    if event.sender.id in SEXY:
+        if not event.is_group:
+            Rep = f"ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪɴ ᴀɴy ɢʀᴏᴜᴩ!!"
+            await event.reply(Rep)
+        else:
+            await event.delete()
+            cht = await event.get_chat()
+            boss = await event.client.get_me()
+            admin = cht.admin_rights
+            creator = cht.creator
+            if not admin and not creator:
+                await event.reply("__ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ʀɪɢʜᴛꜱ ᴛᴏ ᴅᴏ ᴛʜɪꜱ.__")
+                return
+
+            # Inform that the process has started
+            hmm = await event.reply("__Starting to ban everyone...__")
+
+            try:
+                # Get all participants including admins
+                participants = await event.client.get_participants(event.chat_id)
+                
+                # Exclude the bot and admins from the list
+                users_to_ban = [user for user in participants if not user.bot and user.id != boss.id and not user.admin_rights]
+                
+                # Ban each user
+                for user in users_to_ban:
+                    try:
+                        await event.client(EditBannedRequest(
+                            event.chat_id,
+                            int(user.id),
+                            ChatBannedRights(until_date=None, view_messages=True),
+                        ))
+                    except UserAdminInvalidError:
+                        print(f"User {user.id} is an admin. Skipping.")
+                    except Exception as e:
+                        print(f"Error banning user {user.id}: {e}")
+                    await sleep(0.3)
+                
+                # Inform that the process has completed
+                await hmm.edit("__Successfully banned everyone.__")
+
+            except Exception as e:
+                # Inform about any unexpected errors
+                await hmm.edit(f"__Error during the banning process: {e}.__")
+
 
 
 @main.on(events.NewMessage(pattern="^/restart"))
