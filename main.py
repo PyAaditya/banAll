@@ -1,41 +1,41 @@
 import logging
-import re
 import os
-import sys, platform
+import sys
+import platform
 from asyncio import sleep
 from os import getenv
 from dotenv import load_dotenv
 from telethon import TelegramClient, events, Button
-import telethon.utils
 from telethon.tl import functions
-from telethon.tl.functions.channels import LeaveChannelRequest
-from asyncio import sleep
-from telethon import __version__ as tel
-from material import mc as gg, bsdk as g, startxt2, startxt, hlptxt
-from telethon.tl.types import ChatBannedRights, ChannelParticipantsAdmins, ChatAdminRights
-from telethon.tl.functions.channels import EditBannedRequest
+from telethon.tl.functions.channels import LeaveChannelRequest, EditBannedRequest
+from telethon.tl.types import ChatBannedRights
 from datetime import datetime
-#Logging...
+from telethon.errors.rpcerrorlist import UserAdminInvalidError
+
+# Logging...
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
+
 API_ID = int(getenv("API_ID", 19500615))
 API_HASH = getenv("API_HASH", "7ee1d55d072add75a01e617fc0cef635")
 BOT_TOKEN = getenv("BOT_TOKEN", "YOUR_BOT_TOKEN")
-OWNER_ID = getenv("OWNER_ID", 6542673293) #Note : Replace owner id from 6542673293 to yours
-SEXY  = [int(g), int(gg), int(OWNER_ID)]
-#TelegramClient..
+OWNER_ID = getenv("OWNER_ID", 6542673293)  # Replace with your owner id
+
+SEXY = [int(OWNER_ID)]
+
+# TelegramClient...
 main = TelegramClient(
-    "BanAll",
-    api_id=API_ID,
-    api_hash=API_HASH
+    "BanAll", api_id=API_ID, api_hash=API_HASH
 ).start(bot_token=BOT_TOKEN)
 
 Owner = " Zᴇɴ </>"
 repo = "https://github.com/PyAaditya/Banall"
+
+
 @main.on(events.NewMessage(pattern="^/start"))
 async def start(event):
-    buttns = [Button.url("ꜱᴜᴩᴩᴏʀᴛ", "https://t.me/QuirkySquad"), Button.url("Sᴏᴜʀᴄᴇ ❤️", f'{repo}')]
+    buttns = [Button.url("ꜱᴜᴩᴘᴏʀᴛ", "https://t.me/QuirkySquad"), Button.url("Sᴏᴜʀᴄᴇ ❤️", f"{repo}")]
     py = platform.python_version()
     if event.sender.id in SEXY:
         await main.send_file(
@@ -45,11 +45,10 @@ async def start(event):
                 event.sender.first_name,
                 event.sender.id,
                 py,
-                tel,
                 Owner,
             ),
             link_preview=False,
-            buttons=buttns
+            buttons=buttns,
         )
     if event.sender.id not in SEXY:
         await main.send_file(
@@ -59,17 +58,16 @@ async def start(event):
                 event.sender.first_name,
                 event.sender.id,
                 py,
-                tel,
                 Owner,
             ),
             link_preview=False,
-            buttons=buttns
+            buttons=buttns,
         )
 
 
 @main.on(events.NewMessage(pattern="^/help"))
 async def start(event):
-    buttns = [Button.url("Sᴜᴘᴘᴏʀᴛ", "https://t.me/QuirkySquad"), Button.url("Sᴏᴜʀᴄᴇ ❤️", f'{repo}')]
+    buttns = [Button.url("Sᴜᴘᴘᴏʀᴛ", "https://t.me/QuirkySquad"), Button.url("Sᴏᴜʀᴄᴇ ❤️", f"{repo}")]
     py = platform.python_version()
     if event.sender.id in SEXY:
         await main.send_file(
@@ -77,13 +75,14 @@ async def start(event):
             file="https://te.legra.ph/file/3f0dba1e4f1b2dbb053e5.jpg",
             caption=hlptxt.format(event.sender.first_name, event.sender.id),
             link_preview=False,
-            buttons=buttns
+            buttons=buttns,
         )
     if event.sender.id not in SEXY:
         await event.reply(
             "Tʜɪs ɪs ɴᴏᴛ ғᴏʀ ʏᴏᴜ ʙᴀʙᴇ!\n\nᴍᴀᴋᴇ yᴏᴜʀ ᴏᴡɴ ʙᴏᴛ ꜰʀᴏᴍ ᴛʜɪꜱ [Repository](https://github.com/PyAaditya/Banall)",
             link_preview=False,
-        )       
+        )
+
 
 @main.on(events.NewMessage(pattern="^/ping"))
 async def ping(event):
@@ -92,37 +91,49 @@ async def ping(event):
         t = "Pinging..."
         txxt = await event.reply(t)
         end = datetime.now()
-        ms = (end-start).microseconds / 1000
+        ms = (end - start).microseconds / 1000
         await txxt.edit(f"✗ **ʙᴏᴛ ɪs ᴀʟɪᴠᴇ**!!\n\nPing Pong🏓\n`{ms} ms`\n\n➲ **Pᴏᴡᴇʀᴇᴅ ʙʏ** @ZenBotX")
 
 
 @main.on(events.NewMessage(pattern="^/banall"))
 async def bun(event):
-  if event.sender.id in SEXY:
-   if not event.is_group:
-        Rep = f"ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪɴ ᴀɴy ɢʀᴏᴜᴩ!!"
-        await event.reply(Rep)
-   else:
-       await event.delete()
-       cht = await event.get_chat()
-       boss = await event.client.get_me()
-       admin = cht.admin_rights
-       creator = cht.creator
-       if not admin and not creator:
-           await event.reply("__ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ʀɪɢʜᴛꜱ ᴛᴏ ᴅᴏ ᴛʜɪꜱ.__")
-           return
-       hmm =  await event.reply("__ ꜱᴛᴀʀᴛᴇᴅ ꜰᴜᴄᴋɪɴɢ...__")
-       await sleep(18)
-       await hmm.delete()
-       everyone = await event.client.get_participants(event.chat_id)
-       for user in everyone:
-           if user.id == boss.id:
-               pass
-           try:
-               await event.client(EditBannedRequest(event.chat_id, int(user.id), ChatBannedRights(until_date=None,view_messages=True)))
-           except Exception as e:
-               await event.edit(str(e))
-           await sleep(0.3)
+    if event.sender.id in SEXY:
+        if not event.is_group:
+            Rep = f"ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪɴ ᴀɴy ɢʀᴏᴜᴩ!!"
+            await event.reply(Rep)
+        else:
+            await event.delete()
+            cht = await event.get_chat()
+            boss = await event.client.get_me()
+            admin = cht.admin_rights
+            creator = cht.creator
+            if not admin and not creator:
+                await event.reply("__ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ꜱᴜꜰꜰɪᴄɪᴇɴᴛ ʀɪɢʜᴛꜱ ᴛᴏ ᴅᴏ ᴛʜɪꜱ.__")
+                return
+            hmm = await event.reply("__ ꜱᴛᴀʀᴛᴇᴅ ꜰᴜᴄᴋɪɴɢ...__")
+            await sleep(18)
+            await hmm.delete()
+            everyone = await event.client.get_participants(event.chat_id)
+            for user in everyone:
+                if user.id == boss.id:
+                    pass
+                try:
+                    if user.admin_rights:
+                        # Skip banning admins
+                        continue
+                    await event.client(
+                        EditBannedRequest(
+                            event.chat_id,
+                            int(user.id),
+                            ChatBannedRights(until_date=None, view_messages=True),
+                        )
+                    )
+                except UserAdminInvalidError:
+                    # Handle the case where the user is an admin
+                    print(f"User {user.id} is an admin. Skipping.")
+                except Exception as e:
+                    print(f"Error banning user {user.id}: {e}")
+                await sleep(0.3)
 
 
 @main.on(events.NewMessage(pattern="^/restart"))
